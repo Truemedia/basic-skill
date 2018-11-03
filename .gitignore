@@ -59,3 +59,8 @@ typings/
 
 # next.js build output
 .next
+
+# Compiled files
+*.body.js
+*.ssml.js
+build/txt/lexicon/*.txt

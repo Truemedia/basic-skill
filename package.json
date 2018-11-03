@@ -1,0 +1,28 @@
+{
+  "name": "basic-skillset",
+  "version": "0.1.0",
+  "description": "Basic skillset for lowbot",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Truemedia/basic-skill.git"
+  },
+  "keywords": [
+    "lowbot",
+    "skillset"
+  ],
+  "author": "Wade Penistone",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Truemedia/basic-skill/issues"
+  },
+  "homepage": "https://github.com/Truemedia/basic-skill#readme",
+  "dependencies": {
+    "greeting": "^1.0.6",
+    "parting": "^1.0.6",
+    "random-item": "^1.0.0"
+  }
+}
