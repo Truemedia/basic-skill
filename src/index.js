@@ -5,9 +5,11 @@ const Data = require('@data');
 const saluteTpl = require('./../build/js/templates/speech/salute.ssml');
 const parting = require('parting');
 const greeting = require('greeting');
+const info = require('./info.json');
 
-// TODO: Flesh out
 const Basic = {
+    info,
+
     /**
       * Check if skill is compatable with current intent
       */
