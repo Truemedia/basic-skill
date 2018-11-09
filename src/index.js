@@ -42,7 +42,7 @@ const Basic = {
                   }).then( (res) => {
                     let arrivalSalutation = randomItem(res.data).name;
                     resolve( saluteTpl({arrivalSalutation}) );
-                  });
+                  }).catch(reject);
                 break;
                 case 'farewell': // Farewell
                   service.get('salutation', {
@@ -50,7 +50,7 @@ const Basic = {
                   }).then( (res) => {
                     let departureSalutation = randomItem(res.data).name;
                     resolve( saluteTpl({departureSalutation}) );
-                  });
+                  }).catch(reject);
                 break;
                 /**
                   * Date and time
