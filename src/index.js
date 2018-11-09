@@ -3,8 +3,6 @@ const Data = require('@data');
 
 // Templates
 const saluteTpl = require('./../build/js/templates/speech/salute.ssml');
-const parting = require('parting');
-const greeting = require('greeting');
 const info = require('./info.json');
 
 const Basic = {

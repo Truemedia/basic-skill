@@ -21,8 +21,8 @@
   },
   "homepage": "https://github.com/Truemedia/basic-skill#readme",
   "dependencies": {
-    "greeting": "^1.0.6",
-    "parting": "^1.0.6",
-    "random-item": "^1.0.0"
+    "consent-lex": "^1.1.0",
+    "random-item": "^1.0.0",
+    "salutation-lex": "^1.1.0"
   }
 }
