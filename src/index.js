@@ -1,8 +1,8 @@
+const Data = require('data-bite');
 const randomItem = require('random-item');
-const Data = require('@data');
 const info = require('./info.json');
-const Language = require('./../../../core/lowbot/src/language');
-const Template = require('./../../../core/lowbot/src/template');
+const Language = require('@language');
+const Template = require('@template');
 
 const Basic = {
     info,
