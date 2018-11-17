@@ -1,9 +1,8 @@
 const randomItem = require('random-item');
 const Data = require('@data');
-
-// Templates
-const saluteTpl = require('./../build/js/templates/speech/salute.ssml');
 const info = require('./info.json');
+const Language = require('./../../../core/lowbot/src/language');
+const Template = require('./../../../core/lowbot/src/template');
 
 const Basic = {
     info,
@@ -31,50 +30,63 @@ const Basic = {
       */
     handle(handlerInput)
     {
+        // TODO: Load from config
+        let locale = 'en_GB';
+        let locales = ['en_GB', 'ja_JP'];
+        let langs = ['eng', 'jpn'];
+
         return new Promise( (resolve, reject) => {
             let {request} = handlerInput.requestEnvelope;
             let service = new Data().service();
+            let pathOptions = {cwd: './../..', skillDir: 'skillsets/basic-skill'};
+            let lang = new Language(locale, locales, langs, pathOptions);
 
-            switch (request.intent.name) {
-                case 'greeting': // Greeting
-                  service.get('salutation', {
-                    filter: {tags: 'ArrivalSalutation'}
-                  }).then( (res) => {
-                    let arrivalSalutation = randomItem(res.data).name;
-                    resolve( saluteTpl({arrivalSalutation}) );
-                  }).catch(reject);
-                break;
-                case 'farewell': // Farewell
-                  service.get('salutation', {
-                    filter: {tags: 'DepartureSalutation'}
-                  }).then( (res) => {
-                    let departureSalutation = randomItem(res.data).name;
-                    resolve( saluteTpl({departureSalutation}) );
-                  }).catch(reject);
-                break;
-                /**
-                  * Date and time
-                  */
-                // case 'time': // Current time
-                //   let time = null;
-                //   resolve( dateTpl({time}) );
-                // break;
-                // case 'day': // Current day
-                //   let day = null;
-                //   resolve( dateTpl({day}) );
-                // break;
-                /**
-                  * Status
-                  */
-                // case 'status': // Well-being
-                //   let status = null;
-                //   resolve( statusTpl({status}) );
-                // break;
-                // case 'sleep':
-                //   let status = null;
-                //   resolve( statusTpl({status}) );
-                // break;
-            }
+            lang.loadTranslations().then(() => {
+              let templater = new Template(pathOptions, lang.gt);
+              switch (request.intent.name) {
+                  case 'greeting': // Greeting
+                    service.get('salutation', {
+                      filter: {tags: 'ArrivalSalutation'}
+                    }).then( (res) => {
+                      let arrivalSalutation = randomItem(res.data).name;
+                      return templater.tpl('salute', {arrivalSalutation}).compile()
+                        .then(content => resolve(content.body));
+                    }).catch(reject);
+                  break;
+                  case 'farewell': // Farewell
+                    service.get('salutation', {
+                      filter: {tags: 'DepartureSalutation'}
+                    }).then( (res) => {
+                      let departureSalutation = randomItem(res.data).name;
+                      return templater.tpl('salute', {departureSalutation}).compile()
+                        .then(content => resolve(content.body));
+                    }).catch(reject);
+                  break;
+                  /**
+                    * Date and time
+                    */
+                  // case 'time': // Current time
+                  //   let time = null;
+                  //   resolve( dateTpl({time}) );
+                  // break;
+                  // case 'day': // Current day
+                  //   let day = null;
+                  //   resolve( dateTpl({day}) );
+                  // break;
+                  /**
+                    * Status
+                    */
+                  // case 'status': // Well-being
+                  //   let status = null;
+                  //   resolve( statusTpl({status}) );
+                  // break;
+                  // case 'sleep':
+                  //   let status = null;
+                  //   resolve( statusTpl({status}) );
+                  // break;
+              }
+            });
+
         });
     }
 };
