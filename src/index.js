@@ -37,7 +37,7 @@ const Basic = {
         return new Promise( (resolve, reject) => {
             let {request} = handlerInput.requestEnvelope;
             let service = new Data().service();
-            let pathOptions = {cwd: './../..', skillDir: 'skillsets/basic-skill'};
+            let pathOptions = {cwd: __dirname};
             let lang = new Language(locale, locales, langs, pathOptions);
 
             lang.loadTranslations().then(() => {
