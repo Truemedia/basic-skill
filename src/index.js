@@ -1,8 +1,7 @@
 const Data = require('data-bite');
+const {Language, Template} = require('hightech');
 const randomItem = require('random-item');
 const info = require('./info.json');
-const Language = require('@language');
-const Template = require('@template');
 
 const Basic = {
     info,
