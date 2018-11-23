@@ -1,7 +1,15 @@
 const Data = require('data-bite');
 const {Language, Template} = require('hightech');
-const randomItem = require('random-item');
 const info = require('./info.json');
+// Resolvers
+const resolver = {
+  arrival: require('./resolvers/salutation/arrival'),
+  departure: require('./resolvers/salutation/departure'),
+  currentDay: require('./resolvers/date/day'),
+  currentTime: require('./resolvers/date/time'),
+  health: require('./resolvers/status/health'),
+  sleep: require('./resolvers/status/sleep'),
+};
 
 const Basic = {
     info,
@@ -16,7 +24,11 @@ const Basic = {
         let capable = false;
         switch (request.intent.name) {
             case 'greeting':
-            case 'news':
+            case 'farewell':
+            case 'day':
+            case 'time':
+            case 'health':
+            case 'sleep':
                 capable = true;
             break;
         }
@@ -35,57 +47,34 @@ const Basic = {
         let langs = ['eng', 'jpn'];
 
         return new Promise( (resolve, reject) => {
-            let {request} = handlerInput.requestEnvelope;
-            let service = new Data().service();
-            let pathOptions = {cwd: __dirname};
-            let lang = new Language(locale, locales, langs, pathOptions);
+          let {request} = handlerInput.requestEnvelope;
+          let service = new Data().service();
+          let pathOptions = {cwd: __dirname};
+          let lang = new Language(locale, locales, langs, pathOptions);
+          let pod = { // TODO: Implement as full consumable service
+            tz: 'Europe/London'
+          };
 
-            lang.loadTranslations().then(() => {
-              let templater = new Template(pathOptions, lang.gt);
-              switch (request.intent.name) {
-                  case 'greeting': // Greeting
-                    service.get('salutation', {
-                      filter: {tags: 'ArrivalSalutation'}
-                    }).then( (res) => {
-                      let arrivalSalutation = randomItem(res.data).name;
-                      return templater.tpl('salute', {arrivalSalutation}).compile()
-                        .then(content => resolve(content.body));
-                    }).catch(reject);
-                  break;
-                  case 'farewell': // Farewell
-                    service.get('salutation', {
-                      filter: {tags: 'DepartureSalutation'}
-                    }).then( (res) => {
-                      let departureSalutation = randomItem(res.data).name;
-                      return templater.tpl('salute', {departureSalutation}).compile()
-                        .then(content => resolve(content.body));
-                    }).catch(reject);
-                  break;
-                  /**
-                    * Date and time
-                    */
-                  // case 'time': // Current time
-                  //   let time = null;
-                  //   resolve( dateTpl({time}) );
-                  // break;
-                  // case 'day': // Current day
-                  //   let day = null;
-                  //   resolve( dateTpl({day}) );
-                  // break;
-                  /**
-                    * Status
-                    */
-                  // case 'status': // Well-being
-                  //   let status = null;
-                  //   resolve( statusTpl({status}) );
-                  // break;
-                  // case 'sleep':
-                  //   let status = null;
-                  //   resolve( statusTpl({status}) );
-                  // break;
-              }
-            });
-
+          lang.loadTranslations().then(() => {
+            let templater = new Template(pathOptions, lang.gt);
+            switch (request.intent.name) {
+              /**
+                * Salutations
+                */
+              case 'greeting': resolve( resolver.arrival(service, templater) ); break; // Greeting
+              case 'farewell': resolve( resolver.departure(service, templater) ); break; // Farewell
+              /**
+                * Date and time
+                */
+              case 'time': resolve( resolver.currentTime(pod, templater) ); break; // Current time
+              case 'day': resolve( resolver.currentDay(pod, templater) ); break; // Current day
+              /**
+                * Status
+                */
+              case 'health': resolve( resolver.health(templater) ); break; // Well-being
+              case 'sleep': resolve( resolver.sleep(templater) ); break; // Sleep
+            }
+          });
         });
     }
 };

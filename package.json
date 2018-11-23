@@ -25,6 +25,7 @@
     "data-bite": "^1.0.0",
     "hightech": "^0.1.1",
     "random-item": "^1.0.0",
-    "salutation-lex": "^1.1.0"
+    "salutation-lex": "^1.1.0",
+    "spacetime": "^4.5.1"
   }
 }
