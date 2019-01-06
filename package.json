@@ -22,7 +22,7 @@
   "homepage": "https://github.com/Truemedia/basic-skill#readme",
   "dependencies": {
     "consent-lex": "^1.1.0",
-    "data-bite": "^1.0.0",
+    "data-bite": "^2.1.0",
     "hightech": "^0.1.1",
     "random-item": "^1.0.0",
     "salutation-lex": "^1.1.0",
