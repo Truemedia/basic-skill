@@ -1,19 +1,11 @@
 const randomItem = require('random-item');
+const query = require('./../../bindings/strapi/departure.graphql');
 
 /**
   * @return {Promise}
   */
 module.exports = function(service, templater)
 {
-  let query = `{
-    salutations: allJsonApisalutation(filter: {tags: {in: "DepartureSalutation"}}) {
-      edges {
-        node {
-          name
-        }
-      }
-    }
-  }`;
   return service.request(query).then(data => {
     let departureSalutation = randomItem(data.salutations.edges).node.name;
     return templater.tpl('salute', {departureSalutation}).compile();
