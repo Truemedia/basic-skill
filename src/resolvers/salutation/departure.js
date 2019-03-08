@@ -1,5 +1,5 @@
 const randomItem = require('random-item');
-const query = require('./../../bindings/strapi/departure.graphql');
+const query = require('./../../bindings/gridsome/strapi/departure.graphql');
 
 /**
   * @return {Promise}
