@@ -1,6 +1,6 @@
 {
   "name": "basic-skillset",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "Basic skillset for Mind Stack",
   "main": "src/index.js",
   "scripts": {
